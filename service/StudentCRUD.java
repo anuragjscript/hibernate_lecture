@@ -76,19 +76,26 @@ public class StudentCRUD {
 		
 	}
     
-    public void deleteStudentById(int studentId){
+    public boolean deleteStudentById(int studentId){
+    	
+    	boolean deleted = false;
     	
         try {
             session = sessionFactory.openSession();
             Transaction tx = session.beginTransaction();
             Student studentFromDB = session.get(Student.class, studentId);
-            session.delete(studentFromDB);
+            if( studentFromDB != null ) {
+            	session.delete(studentFromDB);
+            	deleted = true;
+        	}
             tx.commit();
         } catch (Exception exception){
             System.out.println(exception.getMessage());
         } finally {
             session.close();
         }
+        
+        return deleted;
         
     }
         
