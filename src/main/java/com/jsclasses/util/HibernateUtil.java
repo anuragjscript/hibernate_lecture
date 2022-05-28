@@ -8,6 +8,7 @@ import com.jsclasses.model.Teacher;
 import com.jsclasses.model.TeacherAddress;
 import com.jsclasses.model.Course;
 import com.jsclasses.model.Review;
+import com.jsclasses.model.Staff;
 import com.jsclasses.model.Student;
 
 public class HibernateUtil {
@@ -25,6 +26,7 @@ private static SessionFactory sessionFactory = null;
     				.addAnnotatedClass(TeacherAddress.class)
     				.addAnnotatedClass(Review.class)
     				.addAnnotatedClass(Course.class)
+    				.addAnnotatedClass(Staff.class)
                     .buildSessionFactory();
         }
         
