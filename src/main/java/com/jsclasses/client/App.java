@@ -44,6 +44,8 @@ public class App {
         
         action.showAllTeachers();
         
+        action.showCourse(3);
+        
         System.out.println("Done--------------");
         
     }
@@ -218,6 +220,14 @@ public class App {
         Course course = new Course("React JS", 3);
         courseService.insertCourseRecord(course, 2);
         
+	}
+	
+	public void showCourse(int teacherId) {
+		List<Course> courses = courseService.getCourseTeacher(teacherId);
+		for(Course course : courses) {
+			System.out.println("-----------------------------------");
+			System.out.println( course.toString() );
+		}
 	}
 	
 }

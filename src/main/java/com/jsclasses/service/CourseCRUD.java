@@ -1,5 +1,7 @@
 package com.jsclasses.service;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -42,5 +44,26 @@ public class CourseCRUD {
         return course;
         
     }
+	
+	@SuppressWarnings("unchecked")
+	public List<Course> getCourseTeacher(int teacherId) {
+		
+		List<Course> courses = null;
+		
+		try {
+			session = sessionFactory.openSession();      
+            //begin the transaction
+            Transaction tx = session.beginTransaction();
+            //Teacher tempTeacher = session.get(Teacher.class, teacherId);
+            courses = session.createQuery("from Course Where teacher_id ='" + teacherId + "'").list();
+            tx.commit();
+		} catch ( Exception exception){
+            System.out.println(exception.getMessage());
+        } finally {
+            session.close();
+        }
+		
+		return courses;
+	}
 
 }
