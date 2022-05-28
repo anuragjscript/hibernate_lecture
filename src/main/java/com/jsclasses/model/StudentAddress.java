@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table (name = "student_address")
@@ -23,13 +24,13 @@ public class StudentAddress {
 	@Column(name = "addline2")
 	private String addline2;
 	
-	@Column(name = "city", nullable = false)
+	@Column(name = "city", nullable = false, length = 50)
 	private String city;
 	
-	@Column(name = "state", nullable = false)
+	@Column(name = "state", nullable = false, length = 50)
 	private String state;
 	
-	@Column(name = "country", nullable = false)
+	@Transient
 	private String country;
 	
 	@OneToOne(mappedBy = "studentAddress",cascade = CascadeType.ALL)
@@ -37,14 +38,6 @@ public class StudentAddress {
 
 	public StudentAddress() {
 		
-	}
-
-	public StudentAddress(String addline1, String addline2, String city, String state, String country) {
-		this.addline1 = addline1;
-		this.addline2 = addline2;
-		this.city = city;
-		this.state = state;
-		this.country = country;
 	}
 
 	public int getId() {

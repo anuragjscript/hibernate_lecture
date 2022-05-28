@@ -1,5 +1,7 @@
 package com.jsclasses.model;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,8 +9,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table (name="student")
@@ -27,6 +32,14 @@ public class Student {
 	@Column(name = "email", unique = true, nullable = false)
 	private String email;
 	
+	@Lob
+	@Column(name = "profile_picture")
+	private byte[] image;
+	
+	@Column(name = "addmission_date")
+	@Temporal(TemporalType.DATE)
+	private Date admissionDate;
+	
 	//Set up mapping between student and address table
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "student_address_id")
@@ -34,13 +47,6 @@ public class Student {
 	
 	public Student() {
 
-	}
-
-	public Student(String f_name, String l_name, String email) {
-		super();
-		this.f_name = f_name;
-		this.l_name = l_name;
-		this.email = email;
 	}
 
 	public int getId() {
@@ -75,11 +81,14 @@ public class Student {
 		this.email = email;
 	}
 
+	
+
 	@Override
 	public String toString() {
-		return "Student [id=" + id + ", f_name=" + f_name + ", l_name=" + l_name + ", email=" + email + "]";
+		return "Student [id=" + id + ", f_name=" + f_name + ", l_name=" + l_name + ", email=" + email
+				+ ", admissionDate=" + admissionDate + ", studentAddress=" + studentAddress + "]";
 	}
-	
+
 	public StudentAddress getStudentAddress() {
 		return studentAddress;
 	}
@@ -87,5 +96,23 @@ public class Student {
 	public void setStudentAddress(StudentAddress studentAddress) {
 		this.studentAddress = studentAddress;
 	}
+
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
+
+	public Date getAdmissionDate() {
+		return admissionDate;
+	}
+
+	public void setAdmissionDate(Date admissionDate) {
+		this.admissionDate = admissionDate;
+	}
+	
+	
 
 }

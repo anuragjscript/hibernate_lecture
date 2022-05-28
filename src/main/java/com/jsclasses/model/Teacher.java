@@ -37,7 +37,7 @@ public class Teacher {
 	
 	// setting up mapping between teacher & course
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "teacher",
-				cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+				cascade = {CascadeType.ALL})
 	private List<Course> courses;
 	
 	public Teacher() {

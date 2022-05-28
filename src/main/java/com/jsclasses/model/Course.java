@@ -30,7 +30,7 @@ public class Course {
 	private int duration;
 	
 	// should not use cascade delete
-	@ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+	@ManyToOne
 	@JoinColumn(name = "teacher_id")
 	private Teacher teacher;
 	

@@ -1,5 +1,8 @@
 package com.jsclasses.client;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import com.jsclasses.model.StudentAddress;
@@ -30,9 +33,9 @@ public class App {
     public static void main( String[] args ) {
         App action = new App();
         
-        //action.insertStudent();
+        action.insertStudent();
         
-        //action.showAllStudents();
+        action.showAllStudents();
         
         //action.showAddressById(2);
         
@@ -42,36 +45,53 @@ public class App {
         
         //action.insertCourse();
         
-        action.showAllTeachers();
+        //action.showAllTeachers();
         
-        action.showCourse(3);
-        
-        System.out.println("Done--------------");
+        //action.showCourse(2);
         
     }
     
     /**
      * Student related actions
      * =====================================================================
+     * @throws IOException 
      */
     
     public void insertStudent() {
 		
-		Student student1 = new Student("Anurag", "Jaisingh", "anukhg@gmail.com");
-		Student student2 = new Student("Anupama", "Tomar", "anukgg@gmail.com");
-		Student student3 = new Student("Animesh", "Singh", "annie@gmail.com");
+		Student student = new Student();
+		StudentAddress studentAddress = new StudentAddress();
 		
-		StudentAddress student1Address = new StudentAddress("SDO Road", "", "Khagaria", "Bihar", "India");
-		StudentAddress student2Address = new StudentAddress("Saltlake", "Sector 2", "Kolkata", "West Bengal", "India");
-		StudentAddress student3Address = new StudentAddress("Mayur Vihar", "Phase 2", "Noida", "NCR", "India");
+		// set data values
+		student.setF_name("Anurag");
+		student.setL_name("Jaisingh");
+		student.setEmail("anukhg@gmail.com");
+		student.setAdmissionDate(new Date());
 		
-		student1.setStudentAddress(student1Address);
-		student2.setStudentAddress(student2Address);
-		student3.setStudentAddress(student3Address);
+		// read image from location and save in student object
+		try {
+			FileInputStream fis = null;
+			fis = new FileInputStream("src/main/java/images/abcd.jpg");
+			byte[] data = new byte[fis.available()];
+			fis.read(data);
+			student.setImage(data);
+			fis.close();
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
 		
-		studentService.insertStudentRecord(student1);
-		studentService.insertStudentRecord(student2);
-		studentService.insertStudentRecord(student3);
+		// set values to student address object
+		studentAddress.setAddline1("SDO Road");
+		studentAddress.setAddline2("");
+		studentAddress.setCity("Khagaria");
+		studentAddress.setState("Bihar");
+		studentAddress.setCountry("India");
+
+		// set address details to student
+		student.setStudentAddress(studentAddress);
+		
+		// insert all data into student table
+		studentService.insertStudentRecord(student);
 		
 	}
 	
@@ -82,7 +102,6 @@ public class App {
 		for(Student student : students) {
 			System.out.println("-----------------------------------");
 			System.out.println( student.toString() );
-			System.out.println( "Associated : " + student.getStudentAddress().toString() );
 		}
 		
 	}
@@ -217,8 +236,8 @@ public class App {
 	
 	public void insertCourse() {
         
-        Course course = new Course("React JS", 3);
-        courseService.insertCourseRecord(course, 2);
+        Course course = new Course("C++", 5);
+        courseService.insertCourseRecord(course, 1);
         
 	}
 	
@@ -227,6 +246,7 @@ public class App {
 		for(Course course : courses) {
 			System.out.println("-----------------------------------");
 			System.out.println( course.toString() );
+			System.out.println( course.getTeacher().toString() );
 		}
 	}
 	

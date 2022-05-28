@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 
 import com.jsclasses.model.Course;
 import com.jsclasses.model.Teacher;
@@ -19,13 +18,13 @@ public class CourseCRUD {
 		this.sessionFactory = HibernateUtil.getSessionFactory();
 	}
     
-	public Course insertCourseRecord(Course course, int teacherId) {
+	public void insertCourseRecord(Course course, int teacherId) {
     	
     	//save the student instance to the database
         try {
             session = sessionFactory.openSession();      
             //begin the transaction
-            Transaction tx = session.beginTransaction();
+            session.beginTransaction();
             
             // fetch teacher by id
             Teacher tempTeacher = session.get(Teacher.class, teacherId);
@@ -33,15 +32,13 @@ public class CourseCRUD {
             tempTeacher.add(course);
             
             //save the course instance to the database
-            Long result = (Long) session.save(course);
-            System.out.println("Generated identifier: " + result);
-            tx.commit();
+            session.save(tempTeacher);
+            session.getTransaction().commit();
         } catch ( Exception exception){
             System.out.println(exception.getMessage());
         } finally {
             session.close();
         }
-        return course;
         
     }
 	
@@ -53,10 +50,10 @@ public class CourseCRUD {
 		try {
 			session = sessionFactory.openSession();      
             //begin the transaction
-            Transaction tx = session.beginTransaction();
+            session.beginTransaction();
             //Teacher tempTeacher = session.get(Teacher.class, teacherId);
             courses = session.createQuery("from Course Where teacher_id ='" + teacherId + "'").list();
-            tx.commit();
+            session.getTransaction().commit();
 		} catch ( Exception exception){
             System.out.println(exception.getMessage());
         } finally {
