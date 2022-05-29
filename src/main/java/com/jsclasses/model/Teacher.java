@@ -10,9 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -30,23 +28,24 @@ public class Teacher {
 	@Column(name = "email")
 	private String email;
 	
-	// setting up mapping between teacher & teacher address
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "teacher_address_id")
-	private TeacherAddress teacherAddress;
-	
 	// setting up mapping between teacher & course
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "teacher",
 				cascade = {CascadeType.ALL})
 	private List<Course> courses;
 	
+	@Column(name = "address")
+	private Address address;
+	
 	public Teacher() {
 
 	}
 
-	public Teacher(String name, String email) {
-		this.name = name;
-		this.email = email;
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 
 	public int getId() {
@@ -71,19 +70,6 @@ public class Teacher {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	@Override
-	public String toString() {
-		return "Teacher [id=" + id + ", name=" + name + ", email=" + email + "]";
-	}
-	
-	public TeacherAddress getTeacherAddress() {
-		return teacherAddress;
-	}
-
-	public void setTeacherAddress(TeacherAddress teacherAddress) {
-		this.teacherAddress = teacherAddress;
 	}
 
 	//adding a method for uni-directional relationship

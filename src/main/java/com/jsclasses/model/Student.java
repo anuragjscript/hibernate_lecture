@@ -2,15 +2,12 @@ package com.jsclasses.model;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -40,13 +37,19 @@ public class Student {
 	@Temporal(TemporalType.DATE)
 	private Date admissionDate;
 	
-	//Set up mapping between student and address table
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "student_address_id")
-	private StudentAddress studentAddress;
+	@Column(name = "address")
+	private Address address;
 	
 	public Student() {
 
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 
 	public int getId() {
@@ -79,22 +82,6 @@ public class Student {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	
-
-	@Override
-	public String toString() {
-		return "Student [id=" + id + ", f_name=" + f_name + ", l_name=" + l_name + ", email=" + email
-				+ ", admissionDate=" + admissionDate + ", studentAddress=" + studentAddress + "]";
-	}
-
-	public StudentAddress getStudentAddress() {
-		return studentAddress;
-	}
-
-	public void setStudentAddress(StudentAddress studentAddress) {
-		this.studentAddress = studentAddress;
 	}
 
 	public byte[] getImage() {

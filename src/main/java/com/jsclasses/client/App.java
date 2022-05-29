@@ -5,16 +5,18 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-import com.jsclasses.model.StudentAddress;
 import com.jsclasses.model.Teacher;
-import com.jsclasses.model.TeacherAddress;
+import com.jsclasses.model.Address;
 import com.jsclasses.model.Course;
+import com.jsclasses.model.Department;
+import com.jsclasses.model.Salary;
+import com.jsclasses.model.Staff;
 import com.jsclasses.model.Student;
 import com.jsclasses.service.CourseCRUD;
 import com.jsclasses.service.ReviewCRUD;
-import com.jsclasses.service.StudentAddressCRUD;
+import com.jsclasses.service.SalaryCRUD;
+import com.jsclasses.service.StaffCRUD;
 import com.jsclasses.service.StudentCRUD;
-import com.jsclasses.service.TeacherAddressCRUD;
 import com.jsclasses.service.TeacherCRUD;
 
 /**
@@ -24,18 +26,19 @@ import com.jsclasses.service.TeacherCRUD;
 public class App {
 	
 	StudentCRUD studentService = new StudentCRUD();
-	StudentAddressCRUD addressService = new StudentAddressCRUD();
 	TeacherCRUD teacherService = new TeacherCRUD();
-	TeacherAddressCRUD teacherAddressService = new TeacherAddressCRUD();
 	CourseCRUD courseService = new CourseCRUD();
 	ReviewCRUD reviewService = new ReviewCRUD();
+	StaffCRUD staffService = new StaffCRUD();
+	SalaryCRUD salaryService = new SalaryCRUD();
+	
 	
     public static void main( String[] args ) {
         App action = new App();
         
-        action.insertStudent();
+        //action.insertStudent();
         
-        action.showAllStudents();
+        //action.showAllStudents();
         
         //action.showAddressById(2);
         
@@ -49,6 +52,11 @@ public class App {
         
         //action.showCourse(2);
         
+        //action.insertStaff();
+        
+        action.showStaffBySalaryId(1);
+        
+        
     }
     
     /**
@@ -60,7 +68,6 @@ public class App {
     public void insertStudent() {
 		
 		Student student = new Student();
-		StudentAddress studentAddress = new StudentAddress();
 		
 		// set data values
 		student.setF_name("Anurag");
@@ -81,14 +88,13 @@ public class App {
 		}
 		
 		// set values to student address object
-		studentAddress.setAddline1("SDO Road");
-		studentAddress.setAddline2("");
-		studentAddress.setCity("Khagaria");
-		studentAddress.setState("Bihar");
-		studentAddress.setCountry("India");
-
-		// set address details to student
-		student.setStudentAddress(studentAddress);
+		Address address = new Address();
+		address.setAddressLine1("SDO Road");
+		address.setAddressLine2("");
+		address.setCity("Khagaria");
+		address.setState("Bihar");
+		address.setCountry("India");
+		student.setAddress(address);
 		
 		// insert all data into student table
 		studentService.insertStudentRecord(student);
@@ -112,36 +118,11 @@ public class App {
 			System.out.println("No record found");
 		} else {
 			System.out.println( student.toString() );
-			System.out.println( student.getStudentAddress().toString() );
 		}
 	}
 	
 	public void deleteStudentById(int studentId) {
 		if ( studentService.deleteStudentById(studentId) ) {
-			System.out.println("Deleted");
-		} else {
-			System.out.println("Nothing to delete");
-		}
-		
-	}
-	
-	/**
-	 * Student Address related actions
-	 * =======================================================================
-	 */
-	
-	public void showAddressById(int addressId) {
-		StudentAddress address = addressService.fetchAddressById(addressId);
-		if( address == null ) {
-			System.out.println("No record found");
-		} else {
-			System.out.println( address.toString() );
-			System.out.println( "Associated : " + address.getStudent().toString() );			
-		}
-	}
-	
-	public void deleteAddressById(int addressId) {
-		if ( addressService.deleteAddressById(addressId) ) {
 			System.out.println("Deleted");
 		} else {
 			System.out.println("Nothing to delete");
@@ -156,21 +137,21 @@ public class App {
     
     public void insertTeacher() {
 		
-    	Teacher teacher1 = new Teacher("Anurag Jaisingh", "anukhg@gmail.com");
-    	Teacher teacher2 = new Teacher("Anupama Tomar", "anukgg@gmail.com");
-    	Teacher teacher3 = new Teacher("Animesh Singh", "annie@gmail.com");
-		
-    	TeacherAddress teacher1Address = new TeacherAddress("SDO Road", "", "Khagaria", "Bihar");
-    	TeacherAddress teacher2Address = new TeacherAddress("Saltlake", "Sector 2", "Kolkata", "West Bengal");
-    	TeacherAddress teacher3Address = new TeacherAddress("Mayur Vihar", "Phase 2", "Noida", "NCR");
-		
-    	teacher1.setTeacherAddress(teacher1Address);
-    	teacher2.setTeacherAddress(teacher2Address);
-    	teacher3.setTeacherAddress(teacher3Address);
-		
-		teacherService.insertTeacherRecord(teacher1);
-		teacherService.insertTeacherRecord(teacher2);
-		teacherService.insertTeacherRecord(teacher3);
+    	Teacher teacher = new Teacher();
+    	
+    	teacher.setName("Ramesh Chauhan");
+    	teacher.setEmail("ramesh@gmail.com");
+    	
+    	Address address = new Address();
+    	address.setAddressLine1("Bailiey Road");
+    	address.setAddressLine1("Near Secretariat");
+    	address.setCity("Patna");
+    	address.setState("Bihar");
+    	address.setCountry("India");
+    	
+    	teacher.setAddress(address);
+    	
+		teacherService.insertTeacherRecord(teacher);
 		
 	}
 	
@@ -181,7 +162,6 @@ public class App {
 		for(Teacher teacher : teachers) {
 			System.out.println("-----------------------------------");
 			System.out.println( teacher.toString() );
-			System.out.println( "Associated : " + teacher.getTeacherAddress().toString() );
 		}
 		
 	}
@@ -192,36 +172,11 @@ public class App {
 			System.out.println("No record found");
 		} else {
 			System.out.println( teacher.toString() );
-			System.out.println( teacher.getTeacherAddress().toString() );
 		}
 	}
 	
 	public void deleteTeacherById(int teacherId) {
 		if ( teacherService.deleteTeacherById(teacherId) ) {
-			System.out.println("Deleted");
-		} else {
-			System.out.println("Nothing to delete");
-		}
-		
-	}
-	
-	/**
-	 * Teacher Address related actions
-	 * =======================================================================
-	 */
-	
-	public void showTeacherAddressById(int addressId) {
-		TeacherAddress address = teacherAddressService.fetchAddressById(addressId);
-		if( address == null ) {
-			System.out.println("No record found");
-		} else {
-			System.out.println( address.toString() );
-			System.out.println( "Associated : " + address.getTeacher().toString() );			
-		}
-	}
-	
-	public void deleteTeacherAddressById(int addressId) {
-		if ( teacherAddressService.deleteAddressById(addressId) ) {
 			System.out.println("Deleted");
 		} else {
 			System.out.println("Nothing to delete");
@@ -248,6 +203,51 @@ public class App {
 			System.out.println( course.toString() );
 			System.out.println( course.getTeacher().toString() );
 		}
+	}
+	
+	/**
+	 * Insert Saff
+	 * ====================================================================
+	 */
+	
+	public void insertStaff() {
+		
+		Staff staff = new Staff();
+		staff.setName("Animesh Kashyap");
+		staff.setEmail("annie@gmail.com");
+		staff.setDateOfJoining( new Date() );
+		
+		Address address = new Address();
+		address.setAddressLine1("Vijaynagar");
+		address.setAddressLine2("");
+		address.setCity("Bangalore");
+		address.setState("Karnataka");
+		address.setCountry("India");
+		
+		staff.setAddress(address);
+		
+		Salary salary = new Salary();
+		salary.setDept( Department.HR );
+		salary.setScale(2);
+		salary.setBasic(35000);
+		salary.setHra(7);
+		salary.setDa(4);
+		salary.setTa(5);
+		salary.setStaff(staff);
+		
+		staff.setSalary(salary);
+		
+		staffService.insertTeacherRecord(staff);
+	}
+	
+	/**
+	 * Salary CRUD
+	 * ==========================================================
+	 */
+	
+	public void showStaffBySalaryId(int salaryId) {
+		String name = salaryService.getStaffBySalary(salaryId);
+        System.out.println(name);
 	}
 	
 }

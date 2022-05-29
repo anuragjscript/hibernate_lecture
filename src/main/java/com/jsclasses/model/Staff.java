@@ -2,11 +2,14 @@ package com.jsclasses.model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -27,12 +30,15 @@ public class Staff {
 	@Column(name = "date_of_joining")
 	private Date dateOfJoining;
 	
-	@Column(name = "staff_address")
-	private Address staff_address;
+	@Column(name = "address")
+	private Address address;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "salary_id")
+	private Salary salary;
 
 	public Staff() {
-		super();
-		// TODO Auto-generated constructor stub
+
 	}
 
 	public int getId() {
@@ -67,18 +73,20 @@ public class Staff {
 		this.dateOfJoining = dateOfJoining;
 	}
 
-	public Address getStaff_address() {
-		return staff_address;
+	public Address getAddress() {
+		return address;
 	}
 
-	public void setStaff_address(Address staff_address) {
-		this.staff_address = staff_address;
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 
-	@Override
-	public String toString() {
-		return "Staff [id=" + id + ", name=" + name + ", email=" + email + ", dateOfJoining=" + dateOfJoining
-				+ ", staff_address=" + staff_address + "]";
+	public Salary getSalary() {
+		return salary;
+	}
+
+	public void setSalary(Salary salary) {
+		this.salary = salary;
 	}
 	
 	

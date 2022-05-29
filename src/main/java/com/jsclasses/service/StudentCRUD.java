@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 
 import com.jsclasses.model.Student;
 import com.jsclasses.util.HibernateUtil;
@@ -24,11 +23,10 @@ public class StudentCRUD {
         try {
             session = sessionFactory.openSession();
             //begin the transaction
-            Transaction tx = session.beginTransaction();
+            session.beginTransaction();
             //save the student instance to the database
-            Long result = (Long) session.save(student);
-            System.out.println("Generated identifier: " + result);
-            tx.commit();
+            session.save(student);
+            session.getTransaction().commit();
         } catch ( Exception exception){
             System.out.println(exception.getMessage());
         } finally {
@@ -45,9 +43,9 @@ public class StudentCRUD {
     	
         try {
             session = sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            session.beginTransaction();
             students = session.createQuery("from Student").list();
-            tx.commit();
+            session.getTransaction().commit();
         } catch (Exception exception){
             System.out.println(exception.getMessage());
         } finally {
@@ -64,9 +62,9 @@ public class StudentCRUD {
 		
 		try {
             session = sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            session.beginTransaction();
             student = session.get(Student.class, studentId);
-            tx.commit();
+            session.getTransaction().commit();
         } catch (Exception exception){
             System.out.println(exception.getMessage());
         } finally {
@@ -82,13 +80,13 @@ public class StudentCRUD {
     	
         try {
             session = sessionFactory.openSession();
-            Transaction tx = session.beginTransaction();
+            session.beginTransaction();
             Student studentFromDB = session.get(Student.class, studentId);
             if( studentFromDB != null ) {
             	session.delete(studentFromDB);
             	deleted = true;
         	}
-            tx.commit();
+            session.getTransaction().commit();
         } catch (Exception exception){
             System.out.println(exception.getMessage());
         } finally {

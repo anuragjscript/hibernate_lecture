@@ -5,19 +5,19 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import com.jsclasses.model.Teacher;
+import com.jsclasses.model.Staff;
 import com.jsclasses.util.HibernateUtil;
 
-public class TeacherCRUD {
+public class StaffCRUD {
 	
 	private final SessionFactory sessionFactory;
     private Session session;
     
-	public TeacherCRUD() {
+	public StaffCRUD() {
 		this.sessionFactory = HibernateUtil.getSessionFactory();
 	}
-	
-	public Teacher insertTeacherRecord(Teacher teacher) {
+    
+	public void insertTeacherRecord(Staff staff) {
     	
     	//save the Teacher instance to the database
         try {
@@ -25,26 +25,25 @@ public class TeacherCRUD {
             //begin the transaction
             session.beginTransaction();
             //save the teacher instance to the database
-            session.save(teacher);
+            session.save(staff);
             session.getTransaction().commit();
         } catch ( Exception exception){
             System.out.println(exception.getMessage());
         } finally {
             session.close();
         }
-        return teacher;
         
     }
-    
+	
 	@SuppressWarnings("unchecked")
-	public List<Teacher> fetchAllTeachers() {
+	public List<Staff> fetchAllStaffs() {
     	
-    	List<Teacher> teachers = null;
+    	List<Staff> staffs = null;
     	
         try {
             session = sessionFactory.openSession();
             session.beginTransaction();
-            teachers = session.createQuery("from Teacher").list();
+            staffs = session.createQuery("from Staff").list();
             session.getTransaction().commit();
         } catch (Exception exception){
             System.out.println(exception.getMessage());
@@ -52,38 +51,38 @@ public class TeacherCRUD {
             session.close();
         }
         
-        return teachers;
+        return staffs;
         
     }
 	
-	public Teacher fetchTeacherById(int teacherId) {
+	public Staff fetchStaffById(int staffId) {
 		
-		Teacher teacher = null;
+		Staff staff = null;
 		
 		try {
             session = sessionFactory.openSession();
             session.beginTransaction();
-            teacher = session.get(Teacher.class, teacherId);
+            staff = session.get(Staff.class, staffId);
             session.getTransaction().commit();
         } catch (Exception exception){
             System.out.println(exception.getMessage());
         } finally {
             session.close();
         }
-		return teacher;
+		return staff;
 		
 	}
     
-    public boolean deleteTeacherById(int teacherId){
+    public boolean deleteStaffById(int staffId){
     	
     	boolean deleted = false;
     	
         try {
             session = sessionFactory.openSession();
             session.beginTransaction();
-            Teacher teacherFromDB = session.get(Teacher.class, teacherId);
-            if( teacherFromDB != null ) {
-            	session.delete(teacherFromDB);
+            Staff staffFromDB = session.get(Staff.class, staffId);
+            if( staffFromDB != null ) {
+            	session.delete(staffFromDB);
             	deleted = true;
         	}
             session.getTransaction().commit();
@@ -96,7 +95,5 @@ public class TeacherCRUD {
         return deleted;
         
     }
-    
-    
 
 }
