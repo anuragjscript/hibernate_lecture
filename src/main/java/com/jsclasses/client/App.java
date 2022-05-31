@@ -3,6 +3,7 @@ package com.jsclasses.client;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import com.jsclasses.model.Teacher;
@@ -40,21 +41,23 @@ public class App {
         
         //action.showAllStudents();
         
+        //action.showStudentById(1);
+        
         //action.showAddressById(2);
         
         //action.insertTeacher();
         
-        //action.showTeacherById(2);
+        action.showTeacherById(1);
         
         //action.insertCourse();
         
         //action.showAllTeachers();
         
-        //action.showCourse(2);
+        //action.showCourse(1);
         
         //action.insertStaff();
         
-        action.showStaffBySalaryId(1);
+        //action.showStaffBySalaryId(1);
         
         
     }
@@ -151,6 +154,13 @@ public class App {
     	
     	teacher.setAddress(address);
     	
+    	Course course1 = new Course();
+    	course1.setName("Core Java");
+    	course1.setDuration(6);
+    	course1.setTeacher(teacher);
+    	
+    	teacher.add(course1);
+    	
 		teacherService.insertTeacherRecord(teacher);
 		
 	}
@@ -171,7 +181,14 @@ public class App {
 		if( teacher == null ) {
 			System.out.println("No record found");
 		} else {
-			System.out.println( teacher.toString() );
+			System.out.println( teacher.getName() + " " + teacher.getEmail() );
+//			Iterator<Course> itr = teacher.getCourse().iterator();
+//			while(itr.hasNext())
+//				System.out.println(itr.next());
+			for(Course c : teacher.getCourse()) {
+				System.out.println(c);
+			}
+			
 		}
 	}
 	
@@ -191,8 +208,11 @@ public class App {
 	
 	public void insertCourse() {
         
-        Course course = new Course("C++", 5);
+        Course course = new Course("Python", 12);
         courseService.insertCourseRecord(course, 1);
+        
+        Course course1 = new Course("Laravel", 10);
+        courseService.insertCourseRecord(course1, 0);
         
 	}
 	
@@ -201,7 +221,20 @@ public class App {
 		for(Course course : courses) {
 			System.out.println("-----------------------------------");
 			System.out.println( course.toString() );
-			System.out.println( course.getTeacher().toString() );
+			System.out.println( "Taught BY : " + course.getTeacher().getName() );
+		}
+	}
+	
+	public void showCourse() {
+		List<Course> courses = courseService.getCourseTeacher();
+		for(Course course : courses) {
+			System.out.println("-----------------------------------");
+			System.out.println( course.toString() );
+			try {
+				System.out.println( "Taught BY : " + course.getTeacher().getName() );
+			} catch(NullPointerException e) {
+				System.out.println("Not assigned to any teacher");
+			}
 		}
 	}
 	

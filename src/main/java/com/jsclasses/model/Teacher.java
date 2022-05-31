@@ -29,7 +29,7 @@ public class Teacher {
 	private String email;
 	
 	// setting up mapping between teacher & course
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "teacher",
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "teacher",
 				cascade = {CascadeType.ALL})
 	private List<Course> courses;
 	
@@ -81,8 +81,8 @@ public class Teacher {
 		course.setTeacher(this);
 	}
 	
-	public Course getCourse() {
-		return this.getCourse();
+	public List<Course> getCourse() {
+		return this.courses;
 	}
 		
 }

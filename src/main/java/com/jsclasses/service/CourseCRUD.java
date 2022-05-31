@@ -27,12 +27,19 @@ public class CourseCRUD {
             session.beginTransaction();
             
             // fetch teacher by id
-            Teacher tempTeacher = session.get(Teacher.class, teacherId);
-            // add course to teacher
-            tempTeacher.add(course);
+            if(teacherId == 0) {
+            	
+            	session.save(course);
+            	
+            } else {
+            	Teacher tempTeacher = session.get(Teacher.class, teacherId);
+                // add course to teacher
+                tempTeacher.add(course);
+                
+                //save the course instance to the database
+                session.save(tempTeacher);
+            }
             
-            //save the course instance to the database
-            session.save(tempTeacher);
             session.getTransaction().commit();
         } catch ( Exception exception){
             System.out.println(exception.getMessage());
@@ -53,6 +60,27 @@ public class CourseCRUD {
             session.beginTransaction();
             //Teacher tempTeacher = session.get(Teacher.class, teacherId);
             courses = session.createQuery("from Course Where teacher_id ='" + teacherId + "'").list();
+            session.getTransaction().commit();
+		} catch ( Exception exception){
+            System.out.println(exception.getMessage());
+        } finally {
+            session.close();
+        }
+		
+		return courses;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Course> getCourseTeacher() {
+		
+		List<Course> courses = null;
+		
+		try {
+			session = sessionFactory.openSession();      
+            //begin the transaction
+            session.beginTransaction();
+            //Teacher tempTeacher = session.get(Teacher.class, teacherId);
+            courses = session.createQuery("from Course").list();
             session.getTransaction().commit();
 		} catch ( Exception exception){
             System.out.println(exception.getMessage());

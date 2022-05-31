@@ -99,6 +99,11 @@ public class Student {
 	public void setAdmissionDate(Date admissionDate) {
 		this.admissionDate = admissionDate;
 	}
+
+	@Override
+	public String toString() {
+		return "Student [id=" + id + ", f_name=" + f_name + ", l_name=" + l_name + ", email=" + email + ", admissionDate=" + admissionDate + ", address=" + address + "]";
+	}
 	
 	
 

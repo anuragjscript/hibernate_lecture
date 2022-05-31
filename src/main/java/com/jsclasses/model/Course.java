@@ -31,7 +31,7 @@ public class Course {
 	
 	// should not use cascade delete
 	@ManyToOne
-	@JoinColumn(name = "teacher_id")
+	@JoinColumn(name = "teacher_id", nullable = true)
 	private Teacher teacher;
 	
 	@OneToMany(fetch =FetchType.LAZY, cascade = CascadeType.ALL)
