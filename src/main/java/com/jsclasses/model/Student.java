@@ -1,13 +1,17 @@
 package com.jsclasses.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -39,6 +43,13 @@ public class Student {
 	
 	@Column(name = "address")
 	private Address address;
+	
+	@ManyToMany
+	(
+		mappedBy = "students",
+		cascade = CascadeType.ALL
+	)
+	private List<Course> courses;
 	
 	public Student() {
 
@@ -104,7 +115,16 @@ public class Student {
 	public String toString() {
 		return "Student [id=" + id + ", f_name=" + f_name + ", l_name=" + l_name + ", email=" + email + ", admissionDate=" + admissionDate + ", address=" + address + "]";
 	}
-	
-	
+
+	public List<Course> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(Course course) {
+		if(this.courses == null) {
+			this.courses = new ArrayList<Course>();
+		}
+		this.courses.add(course);
+	}
 
 }

@@ -29,7 +29,7 @@ public class Teacher {
 	private String email;
 	
 	// setting up mapping between teacher & course
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "teacher",
+	@OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY,
 				cascade = {CascadeType.ALL})
 	private List<Course> courses;
 	

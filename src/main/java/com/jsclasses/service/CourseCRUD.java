@@ -90,5 +90,23 @@ public class CourseCRUD {
 		
 		return courses;
 	}
+	
+	public Course getCourseById(int courseId) {
+		
+		Course course = null;
+		try {
+			session = sessionFactory.openSession();      
+            //begin the transaction
+            session.beginTransaction();
+            //Teacher tempTeacher = session.get(Teacher.class, teacherId);
+            course = session.get(Course.class, courseId);
+            session.getTransaction().commit();
+		} catch ( Exception exception){
+            System.out.println(exception.getMessage());
+        } finally {
+            session.close();
+        }
+		return course;
+	}
 
 }

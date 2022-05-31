@@ -3,7 +3,6 @@ package com.jsclasses.client;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import com.jsclasses.model.Teacher;
@@ -47,11 +46,15 @@ public class App {
         
         //action.insertTeacher();
         
-        action.showTeacherById(1);
+        //action.showTeacherById(1);
         
         //action.insertCourse();
         
         //action.showAllTeachers();
+        
+        //action.showAllTeachersWithCourses();
+        
+        action.showTeacherByIdWithCourses(1);
         
         //action.showCourse(1);
         
@@ -59,7 +62,22 @@ public class App {
         
         //action.showStaffBySalaryId(1);
         
+        //action.mapCourseToStudent();
         
+    }
+    
+    /**
+     * Student - Course Mapping
+     * 
+     */
+    
+    public void mapCourseToStudent() {
+    	
+    	studentService.updateStudentRecord(1, 1);
+    	
+    	studentService.updateStudentRecord(6, 1);
+    	studentService.updateStudentRecord(6, 2);
+    	
     }
     
     /**
@@ -73,9 +91,9 @@ public class App {
 		Student student = new Student();
 		
 		// set data values
-		student.setF_name("Anurag");
-		student.setL_name("Jaisingh");
-		student.setEmail("anukhg@gmail.com");
+		student.setF_name("Anupama");
+		student.setL_name("Tomar");
+		student.setEmail("anukgg@gmail.com");
 		student.setAdmissionDate(new Date());
 		
 		// read image from location and save in student object
@@ -92,10 +110,10 @@ public class App {
 		
 		// set values to student address object
 		Address address = new Address();
-		address.setAddressLine1("SDO Road");
+		address.setAddressLine1("Sector 2");
 		address.setAddressLine2("");
-		address.setCity("Khagaria");
-		address.setState("Bihar");
+		address.setCity("Bidhannagr");
+		address.setState("West Bengal");
 		address.setCountry("India");
 		student.setAddress(address);
 		
@@ -171,7 +189,19 @@ public class App {
 
 		for(Teacher teacher : teachers) {
 			System.out.println("-----------------------------------");
-			System.out.println( teacher.toString() );
+			System.out.println( teacher.getName() );
+		}
+		
+	}
+	
+	public void showAllTeachersWithCourses() {
+		
+		List<Teacher> teachers = teacherService.fetchAllTeachersWithCourses();
+
+		for(Teacher teacher : teachers) {
+			System.out.println("-----------------------------------");
+			System.out.println( teacher.getName() );
+			System.out.println( teacher.getCourse() );
 		}
 		
 	}
@@ -182,14 +212,11 @@ public class App {
 			System.out.println("No record found");
 		} else {
 			System.out.println( teacher.getName() + " " + teacher.getEmail() );
-//			Iterator<Course> itr = teacher.getCourse().iterator();
-//			while(itr.hasNext())
-//				System.out.println(itr.next());
-			for(Course c : teacher.getCourse()) {
-				System.out.println(c);
-			}
-			
 		}
+	}
+	
+	public void showTeacherByIdWithCourses(int teacherId) {
+		System.out.println( teacherService.fetchAllCoursesByTeacherId(teacherId) );
 	}
 	
 	public void deleteTeacherById(int teacherId) {

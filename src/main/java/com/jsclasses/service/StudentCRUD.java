@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import com.jsclasses.model.Course;
 import com.jsclasses.model.Student;
 import com.jsclasses.util.HibernateUtil;
 
@@ -96,6 +97,34 @@ public class StudentCRUD {
         return deleted;
         
     }
-        
-
+    
+    public void updateStudentRecord(int studentId, int courseId) {
+    	
+    	//save the student instance to the database
+        try {
+        	
+            session = sessionFactory.openSession();
+            //begin the transaction
+            session.beginTransaction();
+            
+            Student student = session.get(Student.class, studentId);
+        	Course course = session.get(Course.class, courseId);
+        	
+        	student.setCourses(course);
+        	course.setStudents(student);
+                	
+                	
+            //save the student instance to the database
+            session.update(student);
+            session.update(course);
+            
+            session.getTransaction().commit();
+            
+        } catch ( Exception exception){
+            System.out.println(exception.getMessage());
+        } finally {
+            session.close();
+        }
+    }
+    
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import com.jsclasses.model.Course;
 import com.jsclasses.model.Teacher;
 import com.jsclasses.util.HibernateUtil;
 
@@ -56,6 +57,26 @@ public class TeacherCRUD {
         
     }
 	
+	@SuppressWarnings("unchecked")
+	public List<Teacher> fetchAllTeachersWithCourses() {
+    	
+    	List<Teacher> teachers = null;
+    	
+        try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            teachers = session.createQuery("from Teacher T LEFT JOIN FETCH T.courses").list();
+            session.getTransaction().commit();
+        } catch (Exception exception){
+            System.out.println(exception.getMessage());
+        } finally {
+            session.close();
+        }
+        
+        return teachers;
+        
+    }
+	
 	public Teacher fetchTeacherById(int teacherId) {
 		
 		Teacher teacher = null;
@@ -71,6 +92,25 @@ public class TeacherCRUD {
             session.close();
         }
 		return teacher;
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Course> fetchAllCoursesByTeacherId(int teacherId) {
+		
+		List<Course> courses = null;
+		
+		try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            courses = session.createQuery("from Course C LEFT JOIN FETCH C.teacher where teacher_id = " + teacherId).list();
+            session.getTransaction().commit();
+        } catch (Exception exception){
+            System.out.println(exception.getMessage());
+        } finally {
+            session.close();
+        }
+		return courses;
 		
 	}
     

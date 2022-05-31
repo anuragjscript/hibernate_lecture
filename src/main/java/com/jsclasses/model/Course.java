@@ -1,5 +1,6 @@
 package com.jsclasses.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -10,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -30,13 +33,22 @@ public class Course {
 	private int duration;
 	
 	// should not use cascade delete
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "teacher_id", nullable = true)
 	private Teacher teacher;
 	
-	@OneToMany(fetch =FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "course_id")
 	private List<Review> reviews;
+	
+	@ManyToMany
+	@JoinTable
+	(
+		name = "course_student_map",
+		joinColumns = { @JoinColumn(name = "cid") },
+		inverseJoinColumns = { @JoinColumn(name = "sid") }
+	)
+	private List<Student> students;
 
 	public Course() {
 		
@@ -91,7 +103,17 @@ public class Course {
 	public void setReviews(List<Review> reviews) {
 		this.reviews = reviews;
 	}
-	
-	
+
+	public List<Student> getStudents() {
+		return students;
+	}
+
+	public void setStudents(Student student) {
+		if(this.students == null) {
+			students = new ArrayList<Student>();
+		}
+		this.students.add(student);
+	}
+
 
 }
